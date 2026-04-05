@@ -25,7 +25,7 @@ with open(r"P:\Program Files\Python313\AI_assistance\Model\word.jsonl","r") as f
             )
 
 result = collection.query(
-    query_texts=["co rit ti a no ro na do"],
+    query_texts=["co co chan no"],
     n_results=3
 )
 print(result)
