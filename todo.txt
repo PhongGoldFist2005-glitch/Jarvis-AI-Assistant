@@ -1,4 +1,0 @@
-Chạy screen trên terminal
-Thu thập đủ tên riêng
-Lưu vào db
-Ghép nối 2 phần lại với nhau

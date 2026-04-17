@@ -14,7 +14,8 @@ class modelAssistant(modelAbstract):
             prompt= message,
             options={
                 "num_gpu": 1
-            }
+            },
+            keep_alive= True
         )
 
         return response["response"]

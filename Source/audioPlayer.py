@@ -7,9 +7,12 @@ from modelAssist import modelAssistant
 from wakeUp import wakeUpModel
 from queryEmbed import querryEmbedWord
 import json
+from voiceActive import playSound
+import threading
+import queue
 
 class audioPlay:
-    def __init__(self, samplerate, channels, wakeUpModelPath, transcriptPath, outputPath, prompt, databasePath, inputJSON):
+    def __init__(self, samplerate, channels, wakeUpModelPath, transcriptPath, outputPath, prompt, databasePath, inputJSON, voiceSavePath):
         # Thông tin đã wake up hay chưa.
         self.__play = False
         # Thông tin audio.
@@ -23,6 +26,13 @@ class audioPlay:
         # Biến để bắt đầu check sự kiện im lặng
         # Restart ngay mỗi khi bị không coi là im lặng.
         self.__silenceStart = None
+        # Số frame thu được cho toàn bộ đoạn ghi âm sau wake word.
+        self.__recordedFrames = 0
+        # Số frame có năng lượng đủ cao (không phải im lặng).
+        self.__speechFrames = 0
+        # Điều kiện tối thiểu để coi là một câu hỏi hợp lệ.
+        self.__minUtteranceSeconds = 1.2
+        self.__minSpeechSeconds = 0.35
 
         # Khởi tạo mô hình wake up
         # Khi mô hình đánh giá được độ chính xác trên 0.5
@@ -44,8 +54,28 @@ class audioPlay:
         self.__assistObject = modelAssistant()
         self.__prompt = prompt
 
+        # Sử dụng mô hình query embed để sửa lỗi chính tả và tìm kiếm thông tin trong database
         self.__queryEmbedObject = querryEmbedWord(databasePath, inputJSON, self.__assistObject)
 
+        # Khởi tạo mô hình phát âm
+        self.__bufferText = ""
+        self.__playSoundObject = playSound(voiceSavePath)
+
+        # Tạo 1 queue túc trực để nhận text từ LLM đầu vào và tự động đọc ở 1 thread khác mà không bị ảnh hưởng bởi quá trình ghi âm ở thread chính.
+        self.__audio_queue = queue.Queue()
+        def audio_worker():
+            while True:
+                # queue trống sẽ wait chứ thay vì trả về None
+                text = self.__audio_queue.get()
+                if text is None:
+                    break
+                self.__playSoundObject.requestSound(text)
+        
+        self.__audio_thread = threading.Thread(
+            target=audio_worker,
+            daemon=True
+        )
+        self.__audio_thread.start()
 
     def __callback(self, indata, frames, time, status):
         # Khi model wakeup nhận ra key words
@@ -56,10 +86,15 @@ class audioPlay:
         for word, score in prediction.items():
             if word == self.__wakeModelObject.getModelName():
                 if score > self.__accuracy:
+                    # Ngắt audio đang phát nếu có
+                    if self.__play:
+                        self.__playSoundObject.stop()
                     self.setPlay(True)
                     print("Recording...")
+
         if self.__play == True:
             self.__buffer.append(indata.copy())
+            self.__recordedFrames += frames
             energy = np.log(np.mean(indata**2) + 1e-10)
             # Silence
             if energy < self.__threshold:
@@ -70,11 +105,25 @@ class audioPlay:
                     if silenceDuration > 2.5:
                         # Ngắt ghi âm lưu audio
                         self.__play = False
+                        utteranceSeconds = self.__recordedFrames / self.__samplerate
+                        speechSeconds = self.__speechFrames / self.__samplerate
+
+                        if utteranceSeconds < self.__minUtteranceSeconds or speechSeconds < self.__minSpeechSeconds:
+                            print("Audio quá ngắn hoặc chưa đủ thông tin, bỏ qua transcript.")
+                            self.__audio_queue.put("Ồ tôi chưa nghe rõ câu hỏi của bạn, bạn có thể đọc lại giúp tôi câu hỏi được hay không")
+                            self.__buffer.clear()
+                            self.__silenceStart = None
+                            self.__recordedFrames = 0
+                            self.__speechFrames = 0
+                            return
+
                         print("Ngắt kết nối đã lưu file audio users")
                         audio = np.concatenate(self.__buffer)
-                        audio = audio / np.max(np.abs(audio))
+                        maxAbs = np.max(np.abs(audio))
+                        if maxAbs > 0:
+                            audio = audio / maxAbs
                         audio_int16 = np.int16(audio * 32767)
-                        write(self.__outputPath, samplerate, audio_int16)
+                        write(self.__outputPath, self.__samplerate, audio_int16)
                         
                         # Transcript file
                         try:
@@ -84,21 +133,45 @@ class audioPlay:
                             text = self.__queryEmbedObject.query(text, 1)
                             print(f"After correction: {text}")
                             message = self.__prompt + f"\n\n Người dùng:{text}"
-
+                            self.__audio_queue.put("Tôi đã rõ tôi sẽ xử lý yêu cầu của bạn ngay bây giờ.")
+                            
+                            # Module dùng để đọc text từ LLM
+                            self.cleanBufferText()
                             for response in self.__assistObject.useStreamModel(message):
                                 print(response, end="", flush=True)
+                                self.__bufferText += response
+
+
+                                # Nếu gặp dấu chấm câu hoặc buffer đã đủ dài thì tiến hành đọc
+                                if response in ["\n", "."] and len(self.__bufferText) > 20:
+                                    self.__audio_queue.put(str(self.__bufferText))
+                                    self.cleanBufferText()
+                            
+                            # Đọc nốt phần còn lại.
+                            if self.__bufferText:
+                                self.__audio_queue.put(str(self.__bufferText))
+                                self.cleanBufferText()
+                            
                         except Exception as e:
                             print("Transcript model error")
+                            print(e)
+                        finally:
+                            self.__buffer.clear()
+                            self.__silenceStart = None
+                            self.__recordedFrames = 0
+                            self.__speechFrames = 0
 
             # Chỉ 1 chunk không im lặng thì lập tức không tích lũy thời gian im lặng nữa
             else:
                 self.__silenceStart = None
+                self.__speechFrames += frames
         # Khi ghi âm cảm giác kết thúc tiến hành kết thúc tiến hành
         # chuyển trạng thái và refresh buffer.
         # ! Có 1 vấn đề làm buffer chỉ clear khi gọi hàm callback
         else:
             self.__buffer.clear()
     
+
     def playRecored(self):
         with sd.InputStream(
             samplerate= self.__samplerate,
@@ -115,8 +188,17 @@ class audioPlay:
         self.__play = play
         if play:
             self.__silenceStart = None
+            self.__recordedFrames = 0
+            self.__speechFrames = 0
         else:
             self.__buffer.clear()
+            self.__recordedFrames = 0
+            self.__speechFrames = 0
+    
+    def cleanBufferText(self):
+        self.__bufferText = ""
+        return self.__bufferText
+    
     def getPlay(self):
         return self.__play
     
@@ -127,6 +209,8 @@ if __name__ == "__main__":
     outputPath = r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\Audio\output.wav"
     transcriptPath = r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\PhoWhisper-tiny"
     jsonPath = r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\Database\reversed_word.jsonl"
+    voiceSavePath = r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\Audio\voice.mp3"
+
     prompt = """
         Bạn là Jarvis, một trợ lý AI thông minh, chính xác và đáng tin cậy được tạo ra để hỗ trợ người dùng trong nhiều lĩnh vực như công nghệ, lập trình, học tập và kiến thức chung.
 
@@ -145,6 +229,9 @@ if __name__ == "__main__":
         5. Khi giải thích khái niệm phức tạp, hãy chia nhỏ thành từng bước.
         6. Nếu không chắc chắn về thông tin, hãy nói rõ thay vì suy đoán.
         7. Trừ khi thông tin câu hỏi mà bạn nhận được theo bạn có chứa ký tự tên riêng bằng tiếng Anh, nhưng bị ghi nhầm thì hãy ngầm hiểu tên riêng đấy và trả lời câu hỏi.
+        8. Không thêm các kỹ tự đặc biệt như dấu *, -, _ vào câu trả lời của bạn.
+        9. Hãy cố gắng chỉnh sửa lỗi chính tả trong câu hỏi có người dùng nếu bạn phát hiện ra lỗi về ngữ pháp tiếng Việt, trước khi trả lời câu hỏi của người dùng. Nếu bạn không chắc chắn về lỗi chính tả, hãy trả lời câu hỏi của người dùng như bình thường mà không cần chỉnh sửa lỗi chính tả đó.
+        10. Cứ 3 câu thì bạn hãy xuống dòng 1 lần.
 
         Phong cách giao tiếp:
         - Thân thiện nhưng chuyên nghiệp.
@@ -160,5 +247,5 @@ if __name__ == "__main__":
         for line in f:
             data = json.loads(line)
             dictResult.update(data)
-    a = audioPlay(samplerate= samplerate, channels= 1, wakeUpModelPath= wakeUpModelPath, transcriptPath= transcriptPath, outputPath= outputPath, prompt= prompt, databasePath= "./Database/chroma_db", inputJSON= dictResult)
+    a = audioPlay(samplerate= samplerate, channels= 1, wakeUpModelPath= wakeUpModelPath, transcriptPath= transcriptPath, outputPath= outputPath, prompt= prompt, databasePath= "./Database/chroma_db", inputJSON= dictResult, voiceSavePath= voiceSavePath)
     a.playRecored()

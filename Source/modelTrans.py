@@ -10,15 +10,18 @@ class modelTranscript(modelAbstract):
         self._model = pipeline(
             "automatic-speech-recognition",
             model=self._modelPath,
-            device=0,
-            generate_kwargs={
-                "language": "vi",
-                "forced_decoder_ids": None
-            }
+            device=0
         )
+
+        # Avoid duplicate/deprecated suppress-token processor wiring at generate() call time.
+        self._model.model.generation_config.suppress_tokens = None
+        self._model.model.generation_config.begin_suppress_tokens = None
     
     def useModel(self, audioPath):
-        data = self._model(audioPath)
+        data = self._model(audioPath, generate_kwargs={
+                "language": "vi",
+                "task": "transcribe"
+            })
         return data["text"]
 
 

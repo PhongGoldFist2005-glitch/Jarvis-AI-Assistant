@@ -7,3 +7,5 @@ pip install g2p-en
 nltk.download('averaged_perceptron_tagger_eng')
 nltk.download('cmudict')
 nltk.download('punkt')
+pip install git+https://github.com/tronghieuit/valtec-tts.git
+pip install bm25s
