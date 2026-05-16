@@ -9,3 +9,6 @@ nltk.download('cmudict')
 nltk.download('punkt')
 pip install git+https://github.com/tronghieuit/valtec-tts.git
 pip install bm25s
+docker run -p 6333:6333 -p 6334:6334 -v "P:\Program Files\Python313\AI_assistance\GitModel\qdrant_store:/qdrant/storage:z" qdrant/qdrant
+docker stop <container-id>
+pip install qdrant-client

@@ -4,3 +4,7 @@ PhoWhisper-tiny/
 Test/
 valtec-tts/
 token.txt
+tokenSaving.py
+qdrant_store/
+libs.txt
+todo.txt

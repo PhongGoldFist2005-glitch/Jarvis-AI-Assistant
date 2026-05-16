@@ -1,86 +1,83 @@
 import asyncio
-import io
 import os
-import wave
 import threading
 from queue import Queue
 from pydub import AudioSegment
 from pydub.playback import play
 import edge_tts
+import time
 
 class playSound:
-    """
-    Tối ưu hóa: Thay gTTS bằng edge-tts (offline, ~10x nhanh hơn)
-    - requestSound() không chặn - chỉ gửi vào queue rồi return
-    - Thread riêng xử lý phát audio tuần tự
-    - Có cơ chế stop() để ngắt audio đang phát
-    """
-    def __init__(self, outputPath=r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\Audio\voice.mp3"):
+    def __init__(self, outputPath):
         self.outputPath = outputPath
         self.defaultMessage = "Xin chào, tôi là trợ lý ảo của bạn, tôi có thể giúp gì cho bạn"
-        self.voice = "vi-VN-HoaiMyNeural"  # Giọng Việt tự nhiên
+        self.voice = "vi-VN-HoaiMyNeural"
         
-        # Tạo queue và thread worker riêng để xử lý audio tuần tự
         self.sound_queue = Queue()
         self.is_playing = False
         self.stop_flag = False
         self.worker_thread = threading.Thread(target=self._sound_worker, daemon=True)
         self.worker_thread.start()
-    
-    def _sound_worker(self):
-        """Thread worker: lấy text từ queue, download + phát tuần tự"""
-        while True:
-            message = self.sound_queue.get()
-            if message is None:  # Signal kết thúc
-                break
 
-            # Reset flag ngắt
-            self.stop_flag = False
-            
-            if not message:
-                message = self.defaultMessage
-
-            
+    # ✅ Method bị thiếu - thêm vào đây
+    async def _generate_tts(self, message, output_file):
+        for attempt in range(3):
             try:
-                self.is_playing = True
-                output_file = self.outputPath
-                communicate = edge_tts.Communicate(
-                    text=message,
-                    voice=self.voice
-                )
-                
-                # Lưu + phát
-                asyncio.run(communicate.save(output_file))
-
-                # Nếu được gọi stop(), không phát
-                if self.stop_flag:
-                    print("Audio bị ngắt")
-                    self.is_playing = False
-                    continue
-                
-                audio = AudioSegment.from_file(output_file, format="mp3")
-                play(audio)
-            
+                communicate = edge_tts.Communicate(text=message, voice=self.voice)
+                await asyncio.wait_for(communicate.save(output_file), timeout=15.0)
+                return True
             except Exception as e:
-                print(f"TTS Error: {e}")
-            finally:
-                self.is_playing = False
-    
+                print(f"Thử lần {attempt + 1} thất bại: {e}")
+                if attempt < 2:
+                    await asyncio.sleep(0.5 * (attempt + 1))
+        return False
+
+    def _sound_worker(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        output_file = None  # ✅ Khai báo trước để finally không bị lỗi NameError
+        try:
+            while True:
+                message = self.sound_queue.get()
+                if message is None:
+                    break
+
+                self.stop_flag = False
+                if not str(message).strip():
+                    message = self.defaultMessage
+
+                try:
+                    self.is_playing = True
+                    output_file = f"{self.outputPath}_{int(time.time()*1000)}.mp3"
+
+                    success = loop.run_until_complete(
+                        self._generate_tts(message, output_file)
+                    )
+
+                    if not success or self.stop_flag:
+                        continue
+
+                    audio = AudioSegment.from_file(output_file, format="mp3")
+                    play(audio)
+                    os.remove(output_file)
+
+                except Exception as e:
+                    print(f"TTS Error: {e}")
+                finally:
+                    self.is_playing = False
+                    if output_file and os.path.exists(output_file):
+                        os.remove(output_file)
+        finally:
+            loop.close()
+
     def requestSound(self, message):
-        """Không chặn - chỉ gửi vào queue rồi return ngay"""
         self.sound_queue.put(message)
-    
+
     def stop(self):
-        """Ngắt audio đang phát và xóa queue"""
         self.stop_flag = True
-        # Xóa toàn bộ audio chưa xử lý trong queue
         while not self.sound_queue.empty():
             try:
                 self.sound_queue.get_nowait()
             except:
                 break
         print("Audio queue đã bị xóa")
-
-if __name__ == "__main__":
-    a = playSound()
-    a.requestSound("Xin chào, tôi là trợ lý ảo của bạn")
