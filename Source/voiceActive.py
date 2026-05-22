@@ -19,7 +19,6 @@ class playSound:
         self.worker_thread = threading.Thread(target=self._sound_worker, daemon=True)
         self.worker_thread.start()
 
-    # ✅ Method bị thiếu - thêm vào đây
     async def _generate_tts(self, message, output_file):
         for attempt in range(3):
             try:
@@ -35,7 +34,7 @@ class playSound:
     def _sound_worker(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        output_file = None  # ✅ Khai báo trước để finally không bị lỗi NameError
+        output_file = None
         try:
             while True:
                 message = self.sound_queue.get()

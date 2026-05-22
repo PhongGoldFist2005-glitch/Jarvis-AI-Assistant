@@ -33,12 +33,12 @@ class audioPlay:
             self.__wakeModelObject = wakeUpModel(self.__params.wake_up_model_path)
             self.__wakeModel = self.__wakeModelObject.getModel()
             if self.__wakeModel is None:
-                print("⚠️ Wake word model not loaded. Wake word detection disabled.")
+                print("Wake word model not loaded. Wake word detection disabled.")
                 self.__wakeModelEnabled = False
             else:
                 self.__wakeModelEnabled = True
         except Exception as e:
-            print(f"⚠️ Error loading wake word model: {e}")
+            print(f"Error loading wake word model: {e}")
             self.__wakeModelEnabled = False
             self.__wakeModel = None
         
@@ -91,7 +91,7 @@ class audioPlay:
                             self.setPlay(True)
                             print("Recording...")
             except Exception as e:
-                print(f"⚠️ Wake word prediction error: {e}")
+                print(f"Wake word prediction error: {e}")
 
         if self.__play == True:
             self.__buffer.append(indata.copy())
@@ -201,7 +201,7 @@ class audioPlay:
         if cleaned_text and len(cleaned_text) > 0:
             self.__audio_queue.put(cleaned_text)
         else:
-            print(f"⚠️ Skipped empty text: {repr(text)}")
+            print(f"Skipped empty text: {repr(text)}")
     
     def getPlay(self):
         return self.__play

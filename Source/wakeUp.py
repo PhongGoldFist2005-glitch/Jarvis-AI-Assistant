@@ -13,7 +13,7 @@ class wakeUpModel(modelAbstract):
             if os.path.exists(modelPath):
                 self._model = Model(wakeword_models=[modelPath])
             else:
-                print(f"⚠️ Model file not found: {modelPath}")
+                print(f"Model file not found: {modelPath}")
                 print("   Trying to load with just filename...")
                 # Nếu không tìm thấy file, thử chỉ dùng tên
                 model_name = os.path.basename(modelPath).replace('.onnx', '').replace('.tflite', '')
