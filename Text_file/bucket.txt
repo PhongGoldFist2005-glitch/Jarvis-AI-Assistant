@@ -1,0 +1,494 @@
+Marilyn Monroe
+Abraham Lincoln
+Nelson Mandela
+Queen Elizabeth
+John F. Kennedy
+Martin Luther King
+Winston Churchill
+Donald Trump
+Bill Gates
+Muhammad Ali
+Mahatma Gandhi
+Mother Teresa
+Christopher Columbus
+Charles Darwin
+Elvis Presley
+Albert Einstein
+Paul McCartney
+Queen Victoria
+Pope Francis
+Jawaharlal Nehru
+Leonardo da Vinci
+Vincent Van Gogh
+Franklin D. Roosevelt
+Pope John Paul II
+Thomas Edison
+Rosa Parks
+Lyndon Johnson
+Ludwig Beethoven
+Oprah Winfrey
+Indira Gandhi
+Eva Peron
+Benazir Bhutto
+George Orwell
+Vladimir Putin
+Dalai Lama
+Walt Disney
+Neil Armstrong
+Peter Sellers
+Barack Obama
+Malcolm X
+J.K.Rowling
+Richard Branson
+Pele
+Angelina Jolie
+Jesse Owens
+John Lennon
+Henry Ford
+Haile Selassie
+Joseph Stalin
+Lord Baden Powell
+Michael Jordan
+Vladimir Lenin
+Ingrid Bergman
+Fidel Castro
+Leo Tolstoy
+Greta Thunberg
+Pablo Picasso
+Oscar Wilde
+Coco Chanel
+Charles de Gaulle
+Amelia Earhart
+John M Keynes
+Louis Pasteur
+Mikhail Gorbachev
+Plato
+Adolf Hitler
+Sting
+Mary Magdalene
+Alfred Hitchcock
+Michael Jackson
+Madonna
+Mata Hari
+Cleopatra
+Grace Kelly
+Malala Yousafzai
+Steve Jobs
+Ronald Reagan
+Lionel Messi
+Babe Ruth
+Bob Geldof
+Roger Federer
+Sigmund Freud
+Woodrow Wilson
+Mao Zedong
+Katherine Hepburn
+Audrey Hepburn
+David Beckham
+Usain Bolt
+Carl Lewis
+Prince Charles
+Jacqueline Kennedy Onassis
+C.S. Lewis
+Billie Holiday
+J.R.R. Tolkien
+Billie Jean King
+Margaret Thatcher
+Anne Frank
+Simon Bolivar
+Marie Antoinette
+Cristiano Ronaldo
+Emmeline Pankhurst
+Emile Zatopek
+Desmond Tutu
+Lech Walesa
+Julie Andrews
+Florence Nightingale
+Marie Curie
+Stephen Hawking
+Tim Berners Lee
+Aung San Suu Kyi
+Lance Armstrong
+Shakira
+Jon Stewart
+Wright Brothers
+Ernest Hemingway
+Paul Krugman
+Superman
+Mickey Mouse
+James Bond
+Bugs Bunny
+Batman
+Dorothy Gale
+Darth Vader
+The Tramp
+Peter Pan
+Indiana Jones
+Rocky Balboa
+Vito Corleone
+Han Solo
+Homer Simpson
+Lucy Ricardo
+Archie Bunker
+King Kong
+Spiderman
+Barbie
+Spock
+Godzilla
+The Joker
+Scarlett OHara
+Winnie-the-Pooh
+Popeye
+Tarzan
+Forrest Gump
+Hannibal Lector
+Big Bird
+Holden Caulfield
+Tony Montana
+Tony Soprano
+The Terminator
+Jon Snow
+Norman Bates
+Charles Foster Kane
+Marty McFly
+Rick Blaine
+Man With No Name
+Charlie Brown
+E.T.
+Arthur Fonzarelli
+Phillip Marlowe
+Jay Gatsby
+Lassie
+Fred Flintstone
+Rooster Cogburn
+Atticus Finch
+Kermit the Frog
+George Bailey
+Yoda
+Zorro
+Moe, Larry, and Curly
+Mary Poppins
+Mario
+Harry Potter
+Holly Golightly
+Gandalf
+The Grinch
+Willy Wonka
+The Hulk
+Scooby-Doo
+Sam Malone
+George Costanza
+Jules Winfield
+John McClane
+Ellen Ripley
+Ralph Kramden
+Edward Scissorhands
+Eric Cartman
+Walter White
+Cosmo Kramer
+Pikachu
+Michael Scott
+Freddy Krueger
+Captain America
+Goku
+Bambi
+Ronald McDonald
+Waldo/Wally
+Buffy Summers
+Frasier Crane
+Omar Little
+Wolverine
+Ron Burgundy
+Jason Voorhees
+Betty Boop
+The Dude
+Bilbo Baggins
+Tom Joad
+Tony Stark
+Katniss Everdeen
+Porky Pig
+Travis Bickle
+Hawkeye Pierce
+Don Draper
+Cliff Huxtable
+Shrek
+Optimus Prime
+Sonic the Hedgehog
+NVIDIA
+Alphabet (Google)
+Apple
+Microsoft
+Amazon
+TSMC
+Meta Platforms
+Broadcom
+Saudi Aramco
+Tesla
+Berkshire Hathaway
+Eli Lilly
+JPMorgan Chase
+Walmart
+Tencent
+Visa
+Samsung
+Oracle
+Mastercard
+Exxon Mobil
+Johnson &amp; Johnson
+ASML
+Bank of America
+Palantir
+Costco
+AbbVie
+Netflix
+LVMH
+Agri. Bank of China
+Alibaba
+Micron Technology
+Home Depot
+SK Hynix
+ICBC
+Roche
+China Const. Bank
+General Electric
+AMD
+Procter &amp; Gamble
+Chevron
+UnitedHealth
+Wells Fargo
+Coca-Cola
+Morgan Stanley
+Cisco
+AstraZeneca
+Caterpillar
+Goldman Sachs
+IBM
+SAP
+Toyota
+Merck
+HSBC
+Novartis
+Prosus
+Hermus
+American Express
+PetroChina
+Novo Nordisk
+Kweichow Moutai
+Lam Research
+Bank of China
+RTX
+Salesforce
+Philip Morris
+CATL
+Nestle
+Int. Holding Co.
+Royal Bank Canada
+L'Oral
+Siemens
+Thermo Fisher
+China Mobile
+Applied Materials
+T-Mobile US
+Citigroup
+Reliance Industries
+McDonald's
+Abbott Labs
+Shopify
+Intuitive Surgical
+AppLovin
+Linde
+Inditex
+Walt Disney
+Shell
+China Life Ins.
+QUALCOMM
+Intel
+Airbus
+Mitsubishi UFJ
+Pepsico
+Blackstone
+Charles Schwab
+Uber
+Intuit
+Ping An Ins.
+Boeing
+Amgen
+Booking Holdings
+Genshin Impact
+PUBG Mobile
+Call of Duty: Mobile
+Among Us
+Free Fire
+Clash Royale
+Clash of Clans
+Pokemon GO
+Mobile Legends: Bang Bang
+Arena of Valor
+Candy Crush Saga
+Subway Surfers
+Brawl Stars
+Minecraft (Mobile)
+Fortnite (Mobile)
+Asphalt 9: Legends
+Plants vs. Zombies
+Monument Valley 2
+Altos Odyssey
+Stardew Valley (Mobile)
+The Witcher 3: Wild Hunt
+Cyberpunk 2077
+Grand Theft Auto V
+Red Dead Redemption 2
+League of Legends
+Dota 2
+Counter-Strike: Global Offensive
+Valorant
+World of Warcraft
+Minecraft
+Fortnite
+Apex Legends
+Overwatch 2
+StarCraft II
+Hades
+Horizon Zero Dawn
+Assassins Creed Odyssey
+Half-Life: Alyx
+Sekiro: Shadows Die Twice
+Elden Ring
+The Legend of Zelda: Breath of the Wild
+Dark Souls III
+God of War (2018)
+Resident Evil 4
+The Last of Us Part II
+Shadow of the Colossus
+Bloodborne
+Hollow Knight
+Celeste
+The Elder Scrolls V: Skyrim
+Nier: Automata
+Persona 5
+Divinity: Original Sin 2
+Dishonored 2
+Metal Gear Solid V: The Phantom Pain
+Bastion
+Ori and the Blind Forest
+Cuphead
+Journey
+Super Mario Odyssey
+Street Fighter V
+Mortal Kombat 11
+Tekken 7
+Injustice 2
+Dragon Ball FighterZ
+Soulcalibur VI
+Guilty Gear Strive
+Super Smash Bros. Ultimate
+For Honor
+BlazBlue: Cross Tag Battle
+Marvel vs. Capcom: Infinite
+Samurai Shodown
+Naruto Shippuden: Ultimate Ninja Storm 4
+King of Fighters XIV
+Dead or Alive 6
+Rivals of Aether
+Fight Night Champion
+Killer Instinct
+Genshin Impact
+PUBG Mobile
+Call of Duty: Mobile
+Among Us
+Free Fire
+Clash Royale
+Clash of Clans
+Pokemon GO
+Mobile Legends: Bang Bang
+Arena of Valor
+Candy Crush Saga
+Subway Surfers
+Brawl Stars
+Minecraft (Mobile)
+Fortnite (Mobile)
+Asphalt 9: Legends
+Plants vs. Zombies
+Monument Valley 2
+Alto’s Odyssey
+Stardew Valley (Mobile)
+The Witcher 3: Wild Hunt
+Cyberpunk 2077
+Grand Theft Auto V
+Red Dead Redemption 2
+League of Legends
+Dota 2
+Counter-Strike: Global Offensive
+Valorant
+World of Warcraft
+Minecraft
+Fortnite
+Apex Legends
+Overwatch 2
+StarCraft II
+Hades
+Horizon Zero Dawn
+Assassin’s Creed Odyssey
+Half-Life: Alyx
+Sekiro: Shadows Die Twice
+Elden Ring
+The Legend of Zelda: Breath of the Wild
+Dark Souls III
+God of War (2018)
+Resident Evil 4
+The Last of Us Part II
+Shadow of the Colossus
+Bloodborne
+Hollow Knight
+Celeste
+The Elder Scrolls V: Skyrim
+Nier: Automata
+Persona 5
+Divinity: Original Sin 2
+Dishonored 2
+Metal Gear Solid V: The Phantom Pain
+Bastion
+Ori and the Blind Forest
+Cuphead
+Journey
+Super Mario Odyssey
+Street Fighter V
+Mortal Kombat 11
+Tekken 7
+Injustice 2
+Dragon Ball FighterZ
+Soulcalibur VI
+Guilty Gear Strive
+Super Smash Bros. Ultimate
+For Honor
+BlazBlue: Cross Tag Battle
+Marvel vs. Capcom: Infinite
+Samurai Shodown
+Naruto Shippuden: Ultimate Ninja Storm 4
+King of Fighters XIV
+Dead or Alive 6
+Rivals of Aether
+Fight Night Champion
+UFC 4
+WWE 2K22
+Killer Instinct
+Uncharted 4: A Thief’s End
+Tomb Raider (2013)
+Rise of the Tomb Raider
+Assassin’s Creed Valhalla
+Ghost of Tsushima
+Marvel’s Spider-Man
+Batman: Arkham Knight
+Far Cry 5
+Shadow of the Tomb Raider
+Control
+Watch Dogs: Legion
+Just Cause 4
+Hitman 3
+Mad Max
+Yakuza 0
+Days Gone
+Death Stranding
+Devil May Cry 5
+Middle-earth: Shadow of War
+Bayonetta 2

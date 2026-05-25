@@ -1,6 +1,6 @@
 from typing import TypedDict
-from STM import Short_Term_Memory
-from LTM import Long_Term_Memory
+from RAG.memory.STM import Short_Term_Memory
+from RAG.memory.LTM import Long_Term_Memory
 
 class State(TypedDict):
     # Giữ nguyên qua các bước, chỉ bị update khi bị lỗi chính tả hoặc lỗi ngữ pháp

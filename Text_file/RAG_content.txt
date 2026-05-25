@@ -1,0 +1,9 @@
+Các chủ đề cần RAg:
+Yêu cầu các thông tin từ khi model bị cutoff (2021)
+Các câu hỏi yêu cầu sự chính xác cao (yêu cầu các câu có Content đủ đa dạng)
+Các câu hỏi mang tính xác thực thông tin
+Các câu hỏi về lịch sử giao tiếp
+Câu hỏi về tri thức riêng / nội bộ
+Câu hỏi cần truy xuất tài liệu cụ thể
+Câu hỏi cần trích dẫn / nguồn
+Câu hỏi dạng lookup

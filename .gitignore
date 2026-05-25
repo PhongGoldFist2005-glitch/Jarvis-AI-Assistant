@@ -9,3 +9,4 @@ qdrant_store/
 libs.txt
 todo.txt
 MD/
+__pycache__/
