@@ -8,5 +8,6 @@ tokenSaving.py
 qdrant_store/
 libs.txt
 todo.txt
-MD/
+AI_assistance/GitModel/RAG/MD/*.md
 __pycache__/
+MD/
