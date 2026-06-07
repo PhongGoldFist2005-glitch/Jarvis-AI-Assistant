@@ -11,3 +11,4 @@ todo.txt
 AI_assistance/GitModel/RAG/MD/*.md
 __pycache__/
 MD/
+.venv/

@@ -67,15 +67,10 @@ def LLM_gen(state: State):
 	if not user_prompt:
 		return {"response": None}
 
-	debug = os.getenv("RAG_DEBUG", "0") == "1"
-
 	token_ob = tokenizer()
-	if debug:
-		has_key = bool(getattr(token_ob, "gemini_token", ""))
-		print(f"[LLM_gen] model={token_ob.model_name} gemini_token_set={has_key}")
 	llm = ChatGoogleGenerativeAI(
-		model=token_ob.model_name,
-		google_api_key=token_ob.gemini_token,
+		model= token_ob.model_name,
+		google_api_key= token_ob.gemini_token,
 	)
 
 	prompt, parser = _build_prompt(context, user_prompt)
@@ -88,10 +83,4 @@ def LLM_gen(state: State):
 			"summary": parsed.output_summary,
 		}
 	except Exception as exc:
-		if debug:
-			print(f"[LLM_gen] invoke/parse failed: {exc}")
-			try:
-				print("[LLM_gen] raw_response:", response.content)
-			except Exception:
-				print("[LLM_gen] raw_response: <unavailable>")
 		return {"response": None}

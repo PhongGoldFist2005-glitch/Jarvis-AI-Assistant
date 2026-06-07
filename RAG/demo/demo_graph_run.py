@@ -76,17 +76,22 @@ def build_demo_state(user_prompt: str, input_json: dict):
 
 def run_demo():
 	# Demo dau vao
-	question = "Hôm nay trời nóng bao nhiêu độ?"
-	jsonl_path = r"..\..\Database\reversed_word.jsonl"
+	question = "What is the capital of France?"
+	jsonl_path = r"P:\Program Files\Python313\AI_assistance\GitModel\AI_assistant\Database\reversed_word.jsonl"
 	input_json = _load_reversed_jsonl(jsonl_path)
 	graph = get_graph()
 	state = build_demo_state(question, input_json)
 
 	last_state = None
 	last_response_state = None
-	try:
-		for step_state in graph.stream(state, stream_mode="values"):
+	try: # stream_mode="values"
+		for step_state in graph.stream(state, stream_mode="updates"):
 			last_state = step_state
+			print("Step state update:", step_state)
+			if "LLM_gereration" in step_state:
+				print("okok")
+				result = step_state["LLM_gereration"].get("response")
+				print("LLM response update:", result)
 			if step_state.get("response") is not None:
 				last_response_state = step_state
 		result = last_response_state or last_state

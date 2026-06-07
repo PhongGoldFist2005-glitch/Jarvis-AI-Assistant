@@ -5,11 +5,13 @@ class Short_Term_Memory:
     def __init__(self):
         self.context_window = deque()
         self.window_max_size = 50
+    
     def insert_into_window(self, summary_message):
         if len(self.context_window) >= self.window_max_size:
             self.context_window.popleft()
+        context = f"""Đây là thông tin cuộc hội thoại trước đó giữa bạn và người dùng: {summary_message}"""
         content = {
-            "message": summary_message,
+            "message": context,
             "timestamp": datetime.now()
         }
         self.context_window.append(content)

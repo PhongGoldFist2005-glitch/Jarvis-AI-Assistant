@@ -98,16 +98,15 @@ class Long_Term_Memory:
         query_embedding = self.model.encode(query_text, normalize_embeddings=True)
 
         # Tìm kiếm trong Qdrant
-        search_results = self.client.search(
+        search_results = self.client.query_points(
             collection_name=self.collection_name,
-            query_vector=query_embedding.tolist(),
+            query=query_embedding.tolist(),
             limit=limit,
             score_threshold=score_threshold
         )
-
         # Chuẩn bị kết quả
         results = []
-        for result in search_results:
+        for result in search_results.points:
             results.append({
                 "id": result.id,
                 "score": result.score,
@@ -167,30 +166,4 @@ class Long_Term_Memory:
         except Exception as e:
             print(f"Lỗi khi lấy tất cả thông tin: {e}")
             return []
-
-
-if __name__ == "__main__":
-    # Test LTM class
-    ltm = Long_Term_Memory()
-
-    # Test insert
-    print("\n=== Test Insert ===")
-    ltm.insert("Tôi thích nghe nhạc pop")
-    ltm.insert("Tôi thường làm việc vào buổi sáng")
-    ltm.insert("Tôi sống ở Hà Nội")
-
-    # Test query
-    print("\n=== Test Query ===")
-    results = ltm.query("Sở thích âm nhạc")
-    for result in results:
-        print(f"- {result['text']} (Score: {result['score']:.2f})")
-
-    # Test get_all
-    print("\n=== Test Get All ===")
-    all_info = ltm.get_all()
-    print(f"Tổng thông tin lưu trữ: {len(all_info)}")
-
-    # Test delete
-    print("\n=== Test Delete ===")
-    deleted = ltm.delete("xóa thông tin về nhạc")
     

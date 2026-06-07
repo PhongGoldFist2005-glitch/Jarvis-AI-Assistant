@@ -13,6 +13,8 @@ class wakeUpModel(modelAbstract):
             # Tenta carregar từ đường dẫn cục bộ trước
             if os.path.exists(modelPath):
                 self._model = Model(wakeword_models=[modelPath])
+                print(f"Model loaded successfully from: {modelPath}")
+
             else:
                 print(f"Model file not found: {modelPath}")
                 print("   Trying to load with just filename...")

@@ -1,0 +1,10 @@
+{'Preprocessing_text': {'context': None}}
+{'Adding_cache': {'context': 'Đây là nội dung từ các cuộc trò chuyện gần đây: .\n            Nếu có thông tin nào trong đó liên quan đến câu hỏi của người dùng thì hãy sử dụng nó để trả lời câu hỏi của người dùng.\n            Nếu không có thông tin nào liên quan thì hãy bỏ qua phần này.'}}
+{'Planner': {'need_research': False, 'need_old_conversation': False, 'relevant_personal_info': False, 'user_prompt': 'Hôm nay trời nóng bao nhiêu độ?', 'context': 'Đây là nội dung từ các cuộc trò chuyện gần đây: .\n            Nếu có thông tin nào trong đó liên quan đến câu hỏi của người dùng thì hãy sử dụng nó để trả lời câu hỏi của người dùng.\n            Nếu không có thông tin nào liên quan thì hãy bỏ qua phần này.'}}
+{'Enough': None}
+{'Need_previous': None}
+{'Need_research': None}
+{'LLM_gereration': {'response': 'Tôi không có khả năng truy cập thông tin thời tiết theo thời gian thực để biết nhiệt độ chính xác hôm nay.', 'summary': 'Tôi không có khả năng truy cập thông tin thời tiết theo thời gian thực để biết nhiệt độ chính xác hôm nay.'}}
+{'Update_STM': {'stm': <RAG.memory.STM.Short_Term_Memory object at 0x000002C0DBEC12B0>}}
+{'Need_update_LTM': None}
+{'Refresh_state': {'user_prompt': None, 'stm_results': None, 'ltm_results': None, 'search_results': None, 'summary': None, 'response': None, 'context': None, 'need_research': False, 'need_old_conversation': False, 'relevant_personal_info': False, 'retrieval_stm_done': False, 'retrieval_ltm_done': False, 'research_done': False}}

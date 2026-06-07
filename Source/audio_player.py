@@ -15,6 +15,8 @@ from Source.model.wake_up import wakeUpModel
 from Source.param_init import initAudioPlayerParams
 from Source.rag_json_loader import load_reversed_jsonl
 from Source.voice_active import playSound
+import keyboard
+import time
 
 class audioPlay:
     def __init__(self, outputPath):
@@ -35,7 +37,11 @@ class audioPlay:
         # Tiến hành thay đổi trạng thái play
         # Để bắt đầu ghi âm.
         try:
+            # self.__params.wake_up_model_path
             self.__wakeModelObject = wakeUpModel(self.__params.wake_up_model_path)
+            if self.__wakeModelObject.getModel() is None:
+                print("ok")
+                self.__wakeModelEnabled = False
             self.__wakeModel = self.__wakeModelObject.getModel()
             if self.__wakeModel is None:
                 print("Wake word model not loaded. Wake word detection disabled.")
@@ -83,6 +89,12 @@ class audioPlay:
         )
         self.__audio_thread.start()
 
+        # Người dùng tắt ghi âm thủ công
+        self.__user_press = self.__params.default_user_press
+        def on_key(event):
+            self.__user_press = event.name
+        keyboard.on_press(on_key)
+
     def __callback(self, indata, frames, time, status):
         # Khi model wakeup nhận ra key words
         # tiến hành thay đổi trạng thái để tiến hành ghi âm dữ liệu.
@@ -109,14 +121,16 @@ class audioPlay:
             self.__recordedFrames += frames
             energy = np.log(np.mean(indata**2) + 1e-10)
             # Silence
-            if energy < self.__params.threshold:
+            if energy < self.__params.threshold or self.__user_press == "esc":
                 if self.__silenceStart is None:
                     self.__silenceStart = timelib.perf_counter()
                 else:
                     silenceDuration = timelib.perf_counter() - self.__silenceStart
-                    if silenceDuration > 2.5:
+                    if silenceDuration > 2.5 or self.__user_press == "esc":
                         # Ngắt ghi âm lưu audio
                         self.__play = False
+                        self.__user_press = self.__params.default_user_press
+                        
                         utteranceSeconds = self.__recordedFrames / self.__params.samplerate
                         speechSeconds = self.__speechFrames / self.__params.samplerate
 
@@ -142,8 +156,7 @@ class audioPlay:
                             text = self.__transcriptObject.useModel(self.__outputPath)
                             self.__audio_queue.put("Tôi đã rõ tôi sẽ xử lý yêu cầu của bạn ngay bây giờ.")
                             
-                            rag_result = self.__run_rag(text)
-                            rag_text = rag_result.get("response") if rag_result else None
+                            rag_text = self.__run_rag(text)
                             if rag_text:
                                 print(rag_text, end="", flush=True)
                                 self._push_audio_to_queue(rag_text)
@@ -163,7 +176,6 @@ class audioPlay:
                 self.__speechFrames += frames
         # Khi ghi âm cảm giác kết thúc tiến hành kết thúc tiến hành
         # chuyển trạng thái và refresh buffer.
-        # ! Có 1 vấn đề làm buffer chỉ clear khi gọi hàm callback
         else:
             self.__buffer.clear()
     
@@ -229,17 +241,11 @@ class audioPlay:
 
     def __run_rag(self, question: str):
         state = self.__build_rag_state(question)
-        last_state = None
-        last_response_state = None
 
         try:
-            for step_state in self.__rag_graph.stream(state, stream_mode="values"):
-                last_state = step_state
-                if step_state.get("response") is not None:
-                    last_response_state = step_state
-            result = last_response_state or last_state
-            if result is None:
-                result = self.__rag_graph.invoke(state)
+            for step_state in self.__rag_graph.stream(state, stream_mode="updates"):
+                if "LLM_gereration" in step_state:
+                    result = step_state["LLM_gereration"].get("response")
             return result
         except Exception as exc:
             print(f"RAG error: {exc}")

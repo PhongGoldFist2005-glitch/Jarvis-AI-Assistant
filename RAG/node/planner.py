@@ -18,26 +18,6 @@ def planning(state: State):
     input_prompt = state["user_prompt"]
     context = state["context"]
 
-    # Rule-based override for realtime queries
-    keyword_text = (input_prompt or "").lower()
-    realtime_keywords = [
-        "thời tiết",
-        "hom nay",
-        "hôm nay",
-        "moi nhat",
-        "mới nhất",
-        "hien tai",
-        "hiện tại",
-        "tin tuc",
-        "tin tức",
-        "ty gia",
-        "tỷ giá",
-        "gia vang",
-        "giá vàng",
-        "giao thong",
-        "giao thông",
-    ]
-    force_research = any(key in keyword_text for key in realtime_keywords)
 
     parser = PydanticOutputParser(pydantic_object=PlanningOutput)
     format_instructions = parser.get_format_instructions().replace("{", "{{").replace("}", "}}")
@@ -109,9 +89,6 @@ def planning(state: State):
             need_research = parsed.need_research
             context_out = None
 
-        if force_research:
-            need_research = True
-
         return {
             "need_research": need_research,
             "need_old_conversation": need_old_conversation,
@@ -120,6 +97,7 @@ def planning(state: State):
             "context": context_out
         }
     except Exception:
+        print("Lỗi khi gọi LLM trong node Planning, trả về mặc định không cần research và old conversation")
         return {
             "need_research": False,
             "need_old_conversation": False,

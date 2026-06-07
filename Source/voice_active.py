@@ -2,9 +2,9 @@ import asyncio
 import os
 import threading
 from queue import Queue
-from pydub import AudioSegment
-from pydub.playback import play
 import edge_tts
+import time
+import pygame
 import time
 
 # Mục đích chuyển text thành voice
@@ -57,8 +57,12 @@ class playSound:
                     if not success or self.stop_flag:
                         continue
 
-                    audio = AudioSegment.from_file(output_file, format="mp3")
-                    play(audio)
+                    pygame.mixer.init()
+                    pygame.mixer.music.load(output_file)
+                    pygame.mixer.music.play()
+                    while pygame.mixer.music.get_busy():
+                        time.sleep(0.1)
+                    pygame.mixer.music.unload() 
                     os.remove(output_file)
 
                 except Exception as e:
