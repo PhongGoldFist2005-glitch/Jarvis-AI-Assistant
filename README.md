@@ -1,6 +1,6 @@
 # AI_assistant
 
-Trợ lý AI tiếng Việt cho hội thoại trực tiếp, hướng tới phản hồi nhanh, tự nhiên, và có ngữ cảnh. Dự án tập trung vào trải nghiệm trò chuyện realtime, kết hợp bộ nhớ ngắn hạn/dài hạn, tìm kiếm ngoài, và xử lý giọng nói để cải thiện chất lượng hội thoại.
+Trợ lý AI tiếng Việt cho hội thoại trực tiếp, hướng tới phản hồi nhanh, tự nhiên, và có ngữ cảnh. Dự án tập trung vào trải nghiệm trò chuyện realtime, kết hợp bộ nhớ ngắn hạn/dài hạn, tìm kiếm ngoài, và xử lý giọng nói để cải thiện chất lượng hội thoại. Đồng thời Agent có thể đóng vai trò như 1 trợ lý AI smart home.
 
 ## Tính năng chính
 - Hội thoại realtime với ngữ cảnh và phản hồi ngắn gọn, rõ ràng.
